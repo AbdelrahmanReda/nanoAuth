@@ -6,7 +6,11 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 app.use(express.urlencoded({extended: false}))
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    optionsSuccessStatus: 200
+}))
 //Middleware
 app.use(session({
     secret: "secret",
