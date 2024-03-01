@@ -19,7 +19,7 @@ app.use(session({
     cookie: {
         maxAge: 3600000,
         httpOnly: false,
-        sameSite: false,
+        sameSite: 'none',
     }
 }))
 app.set('view engine','ejs');
