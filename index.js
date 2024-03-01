@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy
 
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
-    origin: "https://next-auth-app-six-delta.vercel.app/",
+    origin: "https://next-auth-app-six-delta.vercel.app",
     credentials: true,
     optionsSuccessStatus: 200
 }))
