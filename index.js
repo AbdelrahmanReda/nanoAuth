@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy
 
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://next-auth-app-six-delta.vercel.app/",
     credentials: true,
     optionsSuccessStatus: 200
 }))
@@ -20,7 +20,7 @@ app.use(session({
     cookie: {
         maxAge: 3600000,
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'none',
     }
 }))
