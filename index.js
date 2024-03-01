@@ -16,6 +16,9 @@ app.use(session({
     secret: "secret",
     resave: false ,
     saveUninitialized: true ,
+    cookie: {
+        maxAge: 3600000,
+    }
 }))
 app.set('view engine','ejs');
 app.engine('ejs', require('ejs').__express);
