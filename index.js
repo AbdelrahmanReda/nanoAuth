@@ -20,7 +20,7 @@ app.use(session({
     cookie: {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: 'none',
         domain: "next-auth-app-six-delta.vercel.app"
     }
