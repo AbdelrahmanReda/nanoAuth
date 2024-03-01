@@ -19,6 +19,7 @@ app.use(session({
     cookie: {
         maxAge: 3600000,
         httpOnly: false,
+        sameSite: false,
     }
 }))
 app.set('view engine','ejs');
