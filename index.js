@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     origin: "https://next-auth-app-six-delta.vercel.app",
-    credentials: true,
+    credentials: true, // Allow credentials (cookies) to be sent with requests
     optionsSuccessStatus: 200,
     allowedHeaders: "Content-Type",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -124,5 +124,6 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
 }))
 
 app.get("/dashboard", (req, res) => {
+   console.log(res.headers)
     res.json({message: "logged in successfully"})
 })
