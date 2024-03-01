@@ -22,6 +22,7 @@ app.use(session({
         httpOnly: true,
         secure: false,
         sameSite: 'none',
+        domain: ".next-auth-app-six-delta.vercel.app"
     }
 }))
 app.set('view engine','ejs');
