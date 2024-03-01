@@ -18,6 +18,7 @@ app.use(session({
     saveUninitialized: true ,
     cookie: {
         maxAge: 3600000,
+        httpOnly: false,
     }
 }))
 app.set('view engine','ejs');
