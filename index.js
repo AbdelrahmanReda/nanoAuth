@@ -9,7 +9,11 @@ app.use(express.urlencoded({extended: false}))
 app.use(cors({
     origin: "https://next-auth-app-six-delta.vercel.app",
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    allowedHeaders: "Content-Type",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    maxAge: 3600
 }))
 //Middleware
 app.use(session({
@@ -22,7 +26,7 @@ app.use(session({
         httpOnly: false,
         secure: true,
         sameSite: 'none',
-        domain: "https://next-auth-app-six-delta.vercel.app"
+        domain: ".next-auth-app-six-delta.vercel.app"
     }
 }))
 app.set('view engine','ejs');
