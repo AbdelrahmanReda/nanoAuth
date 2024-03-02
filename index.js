@@ -130,7 +130,7 @@ const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
 const httpOnlyValues = [true, false];
 const secureValues = [true, false];
 const sameSiteValues = ['none', 'strict', 'lax'];
-const domainValues = ['.vercel.app', '.example.com','https://next-auth-app-six-delta.vercel.app'];
+const domainValues = [];
 
 // Array to store all possible options combinations
 const optionsArray = [];
