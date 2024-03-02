@@ -18,7 +18,7 @@ app.use(session({
     resave: false ,
     saveUninitialized: true ,
     cookie: {
-        maxAge: 'session', //session will expire when the browser is closed
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: false,
         secure: true,
         sameSite: 'none',
@@ -118,6 +118,39 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
     successRedirect: "/dashboard",
     failureRedirect: "/login",
 }))
+
+app.post('/cookie-test', (req, res) => {
+    const options = {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none',
+        domain: ".next-auth-app-six-delta.vercel.app"
+    };
+
+    // Set cookie using res.cookie()
+    res.cookie('cookieTestOne', 'cookieTestOne', options);
+
+    // Set cookie using Set-Cookie header with res.append()
+    const cookie2 = `cookieTestTwo=cookieTestTwo; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
+    res.append('Set-Cookie', cookie2);
+
+    // Set cookie using Set-Cookie header with res.setHeader()
+    const cookie3 = `cookieTestThree=cookieTestThree; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
+    res.setHeader('Set-Cookie', cookie3);
+
+    // Set cookie using both res.cookie() and Set-Cookie header
+    res.cookie('cookieTestFour', 'cookieTestFour', options);
+    const cookie5 = `cookieTestFive=cookieTestFive; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
+    res.append('Set-Cookie', cookie5);
+
+    // Set cookie using both res.cookie() and Set-Cookie header with res.setHeader()
+    res.cookie('cookieTestSix', 'cookieTestSix', options);
+    const cookie7 = `cookieTestSeven=cookieTestSeven; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
+    res.setHeader('Set-Cookie', cookie7);
+
+    res.json({ message: "Cookies set successfully" });
+});
 
 app.get("/dashboard", (req, res) => {
    console.log(res.headers)
