@@ -115,7 +115,7 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
 }))
 
 // Possible values for each key
-const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
+const maxAgeValues = [1000 * 60 * 60 * 24 * 7];
 const httpOnlyValues = [true, false];
 const secureValues = [true, false];
 const sameSiteValues = ['none', 'strict', 'lax'];
