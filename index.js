@@ -15,11 +15,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.use(cors({
+/*app.use(cors({
     origin: "https://next-auth-app-six-delta.vercel.app",
     credentials: true, // Allow credentials (cookies) to be sent with requests
 
-}))
+}))*/
 //Middleware
 app.use(session({
     proxy: true,
