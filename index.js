@@ -128,37 +128,45 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
     failureRedirect: "/login",
 }))
 
-app.post('/cookie-test', (req, res) => {
-    const options = {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        domain: ".vercel.app"
-    };
+// Possible values for each key
+const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
+const httpOnlyValues = [true, false];
+const secureValues = [true, false];
+const sameSiteValues = ['none', 'strict', 'lax'];
+const domainValues = ['.vercel.app', '.example.com'];
 
-    // Set cookie using res.cookie()
-    res.cookie('cookieTestOne', 'cookieTestOne', options);
+// Array to store all possible options combinations
+const optionsArray = [];
 
-    // Set cookie using Set-Cookie header with res.append()
-    const cookie2 = `cookieTestTwo=cookieTestTwo; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
-    res.append('Set-Cookie', cookie2);
+// Generate all possible combinations
+maxAgeValues.forEach(maxAge => {
+    httpOnlyValues.forEach(httpOnly => {
+        secureValues.forEach(secure => {
+            sameSiteValues.forEach(sameSite => {
+                domainValues.forEach(domain => {
+                    optionsArray.push({
+                        maxAge,
+                        httpOnly,
+                        secure,
+                        sameSite,
+                        domain
+                    });
+                });
+            });
+        });
+    });
+});
 
-    // Set cookie using Set-Cookie header with res.setHeader()
-    const cookie3 = `cookieTestThree=cookieTestThree; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
-    res.setHeader('Set-Cookie', cookie3);
+app.post('/cookie-alternative', (req, res) => {
+    const responses = [];
 
-    // Set cookie using both res.cookie() and Set-Cookie header
-    res.cookie('cookieTestFour', 'cookieTestFour', options);
-    const cookie5 = `cookieTestFive=cookieTestFive; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
-    res.append('Set-Cookie', cookie5);
+    optionsArray.forEach((options, index) => {
+        // Set cookie using res.cookie()
+        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, options);
+        responses.push(`CookieTest${index + 1} set successfully with options: ${JSON.stringify(options)}`);
+    });
 
-    // Set cookie using both res.cookie() and Set-Cookie header with res.setHeader()
-    res.cookie('cookieTestSix', 'cookieTestSix', options);
-    const cookie7 = `cookieTestSeven=cookieTestSeven; Max-Age=${options.maxAge}; HttpOnly=${true}; Secure=${options.secure}; SameSite=${options.sameSite}; Domain=${options.domain}`;
-    res.setHeader('Set-Cookie', cookie7);
-
-    res.json({ message: "Cookies set successfully" });
+    res.json({ messages: responses });
 });
 
 app.get("/dashboard", (req, res) => {
