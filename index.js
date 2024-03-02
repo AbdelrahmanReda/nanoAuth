@@ -9,11 +9,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(cors({
     origin: "https://next-auth-app-six-delta.vercel.app",
     credentials: true, // Allow credentials (cookies) to be sent with requests
-    optionsSuccessStatus: 200,
-    allowedHeaders: "Content-Type",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    maxAge: 3600
+
 }))
 //Middleware
 app.use(session({
@@ -22,7 +18,7 @@ app.use(session({
     resave: false ,
     saveUninitialized: true ,
     cookie: {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 'session', //session will expire when the browser is closed
         httpOnly: false,
         secure: true,
         sameSite: 'none',
