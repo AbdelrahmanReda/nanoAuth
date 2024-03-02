@@ -115,11 +115,11 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
 }))
 
 // Possible values for each key
-const maxAgeValues = [1000 * 60 * 60 * 24 * 7];
+const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
 const httpOnlyValues = [true, false];
 const secureValues = [true, false];
-const sameSiteValues = ['none', 'strict', 'lax',''];
-
+const sameSiteValues = ['none', 'strict', 'lax'];
+const domainValues = ['.next-auth-app-six-delta.vercel.app','next-auth-app-six-delta.vercel.app'];
 
 // Array to store all possible options combinations
 const optionsArray = [];
@@ -129,15 +129,15 @@ maxAgeValues.forEach(maxAge => {
     httpOnlyValues.forEach(httpOnly => {
         secureValues.forEach(secure => {
             sameSiteValues.forEach(sameSite => {
-
+                domainValues.forEach(domain => {
                     optionsArray.push({
                         maxAge,
                         httpOnly,
                         secure,
                         sameSite,
-
+                        domain
                     });
-
+                });
             });
         });
     });
@@ -147,14 +147,7 @@ app.post('/cookie-alternative', (req, res) => {
     const responses = [];
     optionsArray.forEach((options, index) => {
         // Set cookie using res.cookie()
-        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, {
-            maxAge: options.maxAge,
-            httpOnly: options.httpOnly,
-            secure: options.secure,
-            sameSite: options.sameSite,
-            domain: 'next-auth-app-six-delta.vercel.app',
-            path: "/",
-        });
+        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, options);
         responses.push(`CookieTest${index + 1} set successfully with options: ${JSON.stringify(options)}`);
     });
 
