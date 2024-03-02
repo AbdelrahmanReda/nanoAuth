@@ -6,6 +6,15 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 app.use(express.urlencoded({extended: false}))
+
+// Middleware to handle CORS
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://next-auth-app-six-delta.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 app.use(cors({
     origin: "https://next-auth-app-six-delta.vercel.app",
     credentials: true, // Allow credentials (cookies) to be sent with requests
