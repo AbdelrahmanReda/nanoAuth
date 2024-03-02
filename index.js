@@ -119,7 +119,7 @@ const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
 const httpOnlyValues = [true, false];
 const secureValues = [true, false];
 const sameSiteValues = ['none', 'strict', 'lax'];
-const domainValues = ['.nanoauth.onrender.com','.next-auth-app-six-delta.vercel.app'];
+const domainValues = ['.nanoauth.onrender.com','.next-auth-app-six-delta.vercel.app','https://next-auth-app-six-delta.vercel.app/','https://next-auth-app-six-delta.vercel.app','vercel.app','.vercel.app'];
 
 // Array to store all possible options combinations
 const optionsArray = [];
