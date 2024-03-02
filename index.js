@@ -147,7 +147,10 @@ app.post('/cookie-alternative', (req, res) => {
     const responses = [];
     optionsArray.forEach((options, index) => {
         // Set cookie using res.cookie()
-        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, options);
+        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, {
+            ...options,
+            domain: 'next-auth-app-six-delta.vercel.app',
+        });
         responses.push(`CookieTest${index + 1} set successfully with options: ${JSON.stringify(options)}`);
     });
 
