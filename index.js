@@ -140,15 +140,15 @@ maxAgeValues.forEach(maxAge => {
     httpOnlyValues.forEach(httpOnly => {
         secureValues.forEach(secure => {
             sameSiteValues.forEach(sameSite => {
-                domainValues.forEach(domain => {
+
                     optionsArray.push({
                         maxAge,
                         httpOnly,
                         secure,
-                        sameSite,
+
                         domain
                     });
-                });
+
             });
         });
     });
