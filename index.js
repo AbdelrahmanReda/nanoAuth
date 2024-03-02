@@ -36,9 +36,7 @@ app.use(session({
 app.set('view engine','ejs');
 app.engine('ejs', require('ejs').__express);
 
-app.use(passport.initialize()) // init passport on every route call
-app.use(passport.session())    //allow passport to use "express-session"
-app.use(express.json());
+
 
 authUser = (user, password, done) => {
     console.log(`Value of "User" in authUser function ----> ${user}`)         //passport will populate, user = req.body.username
@@ -172,3 +170,7 @@ app.get("/dashboard", (req, res) => {
    console.log(res.headers)
     res.json({message: "logged in successfully"})
 })
+
+app.use(passport.initialize()) // init passport on every route call
+app.use(passport.session())    //allow passport to use "express-session"
+app.use(express.json());
