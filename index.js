@@ -130,7 +130,7 @@ const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
 const httpOnlyValues = [true, false];
 const secureValues = [true, false];
 const sameSiteValues = ['none', 'strict', 'lax'];
-
+const domainValues = ['nanoauth.onrender.com','https://next-auth-app-six-delta.vercel.app'];
 
 // Array to store all possible options combinations
 const optionsArray = [];
@@ -140,18 +140,20 @@ maxAgeValues.forEach(maxAge => {
     httpOnlyValues.forEach(httpOnly => {
         secureValues.forEach(secure => {
             sameSiteValues.forEach(sameSite => {
+                domainValues.forEach(domain => {
                     optionsArray.push({
                         maxAge,
                         httpOnly,
                         secure,
+                        sameSite,
+                        domain
                     });
+                });
             });
         });
     });
 });
 
-
-console.log("optionsArray", optionsArray)
 app.post('/cookie-alternative', (req, res) => {
     const responses = [];
     optionsArray.forEach((options, index) => {
