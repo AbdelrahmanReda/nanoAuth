@@ -1,30 +1,22 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const session = require('express-session')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
-app.use(express.urlencoded({extended: false}))
-
-// Middleware to handle CORS
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://next-auth-app-six-delta.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-/*app.use(cors({
-    origin: "https://next-auth-app-six-delta.vercel.app",
-    credentials: true, // Allow credentials (cookies) to be sent with requests
-
-}))*/
-//Middleware
+// Middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(cors({
+    origin: 'https://next-auth-app-six-delta.vercel.app',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(session({
-    secret: 'your-secret-key', // Change this to a long, randomly generated string
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -33,9 +25,8 @@ app.use(session({
         sameSite: 'none'
     }
 }));
-app.set('view engine','ejs');
-app.engine('ejs', require('ejs').__express);
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 authUser = (user, password, done) => {
@@ -110,9 +101,7 @@ printData = (req, res, next) => {
     next()
 }
 
-app.use(printData) //user printData function as middleware to print populated variables
 
-app.listen(3001, () => console.log(`Server started on port 3001...`))
 
 app.get("/login", (req, res) => {
     res.json({message: "Please login to continue"})
@@ -170,6 +159,5 @@ app.get("/dashboard", (req, res) => {
     res.json({message: "logged in successfully"})
 })
 
-app.use(passport.initialize()) // init passport on every route call
-app.use(passport.session())    //allow passport to use "express-session"
-app.use(express.json());
+
+app.listen(3001, () => console.log(`Server started on port 3001...`))
