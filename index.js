@@ -131,7 +131,7 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
 app.post('/cookie-test', (req, res) => {
     const options = {
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
         sameSite: 'none',
         domain: ".next-auth-app-six-delta.vercel.app"
