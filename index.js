@@ -1,33 +1,35 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const cookieParser = require('cookie-parser');
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const session = require('express-session')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
-// Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}))
 app.use(cors({
-    origin: 'https://next-auth-app-six-delta.vercel.app',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
-app.use(cookieParser());
+    origin: "https://next-auth-app-six-delta.vercel.app/",
+    credentials: true,
+    optionsSuccessStatus: 200
+}))
+//Middleware
 app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
+    proxy: true,
+    secret: "secret",
+    resave: false ,
+    saveUninitialized: true ,
     cookie: {
-        secure: true, // Set to true if using HTTPS
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-        sameSite: 'none'
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        httpOnly: false,
+        secure: false,
+        sameSite: 'none',
     }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+}))
+app.set('view engine','ejs');
+app.engine('ejs', require('ejs').__express);
 
+app.use(passport.initialize()) // init passport on every route call
+app.use(passport.session())    //allow passport to use "express-session"
+app.use(express.json());
 
 authUser = (user, password, done) => {
     console.log(`Value of "User" in authUser function ----> ${user}`)         //passport will populate, user = req.body.username
@@ -101,7 +103,9 @@ printData = (req, res, next) => {
     next()
 }
 
+app.use(printData) //user printData function as middleware to print populated variables
 
+app.listen(3001, () => console.log(`Server started on port 3001...`))
 
 app.get("/login", (req, res) => {
     res.json({message: "Please login to continue"})
@@ -114,50 +118,6 @@ app.post ("/login", jsonParser,passport.authenticate('local', {
     failureRedirect: "/login",
 }))
 
-// Possible values for each key
-const maxAgeValues = [1000 * 60 * 60 * 24 * 7, 1000 * 60 * 60 * 24 * 14];
-const httpOnlyValues = [true, false];
-const secureValues = [true, false];
-const sameSiteValues = ['none', 'strict', 'lax'];
-const domainValues = ['.next-auth-app-six-delta.vercel.app','next-auth-app-six-delta.vercel.app'];
-
-// Array to store all possible options combinations
-const optionsArray = [];
-
-// Generate all possible combinations
-maxAgeValues.forEach(maxAge => {
-    httpOnlyValues.forEach(httpOnly => {
-        secureValues.forEach(secure => {
-            sameSiteValues.forEach(sameSite => {
-                domainValues.forEach(domain => {
-                    optionsArray.push({
-                        maxAge,
-                        httpOnly,
-                        secure,
-                        sameSite,
-                        domain
-                    });
-                });
-            });
-        });
-    });
-});
-
-app.post('/cookie-alternative', (req, res) => {
-    const responses = [];
-    optionsArray.forEach((options, index) => {
-        // Set cookie using res.cookie()
-        res.cookie(`cookieTest${index + 1}`, `cookieTest${index + 1}`, options);
-        responses.push(`CookieTest${index + 1} set successfully with options: ${JSON.stringify(options)}`);
-    });
-
-    res.json({ messages: responses });
-});
-
 app.get("/dashboard", (req, res) => {
-   console.log(res.headers)
     res.json({message: "logged in successfully"})
 })
-
-
-app.listen(3001, () => console.log(`Server started on port 3001...`))
