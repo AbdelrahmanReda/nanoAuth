@@ -134,7 +134,7 @@ app.post('/cookie-test', (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        domain: ".next-auth-app-six-delta.vercel.app"
+        domain: ".vercel.app"
     };
 
     // Set cookie using res.cookie()
