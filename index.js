@@ -4,6 +4,7 @@ const cors = require('cors')
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const cookieParser = require('cookie-parser');
 
 app.use(express.urlencoded({extended: false}))
 
@@ -21,19 +22,17 @@ app.use((req, res, next) => {
 
 }))*/
 //Middleware
+app.use(cookieParser());
 app.use(session({
-    proxy: true,
-    secret: "secret",
-    resave: false ,
-    saveUninitialized: true ,
+    secret: 'your-secret-key', // Change this to a long, randomly generated string
+    resave: false,
+    saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none',
-        domain: ".vercel.app"
+        secure: true, // Set to true if using HTTPS
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        sameSite: 'none'
     }
-}))
+}));
 app.set('view engine','ejs');
 app.engine('ejs', require('ejs').__express);
 
